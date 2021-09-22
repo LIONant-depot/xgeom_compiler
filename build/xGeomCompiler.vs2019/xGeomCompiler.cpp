@@ -23,6 +23,8 @@ struct geom_pipeline_compiler : xresource_pipeline::compiler::base
 
 int main( int argc, const char* argv[] )
 {
+    xcore::Init("xgeom_compiler");
+
     auto GeomCompilerPipeline = std::make_unique<geom_pipeline_compiler>();
 
     //
@@ -33,7 +35,6 @@ int main( int argc, const char* argv[] )
         printf( "%s\nERROR: Fail to compile\n", Err.getCode().m_pString );
         return -1;
     }
-
 
     return 0;
 }

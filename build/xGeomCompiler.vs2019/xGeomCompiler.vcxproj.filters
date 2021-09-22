@@ -226,4 +226,7 @@
       <Filter>Dependencies\xresource_pipeline</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\..\dependencies\xraw3D\dependencies\assimp\BINARIES\Win32\bin\Release\assimp-vc142-mt.dll" />
+  </ItemGroup>
 </Project>

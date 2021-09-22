@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{07294c85-b753-435e-a7ea-c0d680e55448}</ProjectGuid>
+    <RootNamespace>xGeomCompilervs2019</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>./;../../src;../../dependencies/xraw3d/src;../../src/settings;../../dependencies/xraw3D\dependencies\assimp\include;../../dependencies/xraw3d/dependencies/xcore/src</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>../../dependencies/xraw3d/dependencies/xcore;../../dependencies/xraw3d</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>./;../../src;../../dependencies/xraw3d/src;../../src/settings;../../dependencies/xraw3D\dependencies\assimp\include;../../dependencies/xraw3d/dependencies/xcore/src</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>../../dependencies/xraw3d/dependencies/xcore;../../dependencies/xraw3d</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore.cpp" />
+    <ClCompile Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore_profiler_1.cpp" />
+    <ClCompile Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore_profiler_2.cpp" />
+    <ClCompile Include="..\..\dependencies\xraw3D\src\xraw3d.cpp" />
+    <ClCompile Include="..\..\dependencies\xresource_pipeline\src\xresource_pipeline_compiler_base.cpp" />
+    <ClCompile Include="..\..\src\xgeom_compiler.cpp" />
+    <ClCompile Include="..\..\src_runtime\xgeom.cpp" />
+    <ClCompile Include="xGeomCompiler.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore.h" />
+    <ClInclude Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore_arglist.h" />
+    <ClInclude Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore_array.h" />
+    <ClInclude Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore_assert.h" />
+    <ClInclude Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore_bitmap.h" />
+    <ClInclude Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore_bits.h" />
+    <ClInclude Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore_cmdline.h" />
+    <ClInclude Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore_color.h" />
+    <ClInclude Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore_compression.h" />
+    <ClInclude Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore_context.h" />
+    <ClInclude Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore_crc.h" />
+    <ClInclude Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore_endian.h" />
+    <ClInclude Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore_error.h" />
+    <ClInclude Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore_event.h" />
+    <ClInclude Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore_file.h" />
+    <ClInclude Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore_function.h" />
+    <ClInclude Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore_global.h" />
+    <ClInclude Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore_guid.h" />
+    <ClInclude Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore_lock.h" />
+    <ClInclude Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore_lockless_pool.h" />
+    <ClInclude Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore_lockless_queues.h" />
+    <ClInclude Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore_log.h" />
+    <ClInclude Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore_math.h" />
+    <ClInclude Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore_math_matrix4.h" />
+    <ClInclude Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore_math_quaternion.h" />
+    <ClInclude Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore_math_radian3.h" />
+    <ClInclude Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore_math_shapes.h" />
+    <ClInclude Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore_math_transform.h" />
+    <ClInclude Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore_math_vector2.h" />
+    <ClInclude Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore_math_vector3.h" />
+    <ClInclude Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore_math_vector4.h" />
+    <ClInclude Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore_memory.h" />
+    <ClInclude Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore_profiler.h" />
+    <ClInclude Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore_ptr.h" />
+    <ClInclude Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore_random.h" />
+    <ClInclude Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore_rtti.h" />
+    <ClInclude Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore_scheduler_channel.h" />
+    <ClInclude Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore_scheduler_job.h" />
+    <ClInclude Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore_scheduler_system.h" />
+    <ClInclude Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore_scheduler_trigger.h" />
+    <ClInclude Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore_serialicer.h" />
+    <ClInclude Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore_serializer.h" />
+    <ClInclude Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore_span.h" />
+    <ClInclude Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore_string.h" />
+    <ClInclude Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore_system_reg.h" />
+    <ClInclude Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore_target.h" />
+    <ClInclude Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore_textfile.h" />
+    <ClInclude Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore_textfile2.h" />
+    <ClInclude Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore_types.h" />
+    <ClInclude Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore_unique_span.h" />
+    <ClInclude Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore_units.h" />
+    <ClInclude Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore_vector.h" />
+    <ClInclude Include="..\..\dependencies\xraw3D\src\xraw3d.h" />
+    <ClInclude Include="..\..\dependencies\xraw3D\src\xraw3d_anim.h" />
+    <ClInclude Include="..\..\dependencies\xraw3D\src\xraw3d_assimp_import.h" />
+    <ClInclude Include="..\..\dependencies\xraw3D\src\xraw3d_geom.h" />
+    <ClInclude Include="..\..\dependencies\xresource_pipeline\src\xresource_pipeline.h" />
+    <ClInclude Include="..\..\dependencies\xresource_pipeline\src\xresource_pipeline_compiler_base.h" />
+    <ClInclude Include="..\..\src\xgeom_compiler.h" />
+    <ClInclude Include="..\..\src_runtime\xgeom.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

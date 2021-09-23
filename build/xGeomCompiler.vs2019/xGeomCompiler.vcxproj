@@ -161,8 +161,12 @@
     <ClInclude Include="..\..\dependencies\xraw3D\src\xraw3d_anim.h" />
     <ClInclude Include="..\..\dependencies\xraw3D\src\xraw3d_assimp_import.h" />
     <ClInclude Include="..\..\dependencies\xraw3D\src\xraw3d_geom.h" />
+    <ClInclude Include="..\..\dependencies\xresource_pipeline\src\xresource_pipeline_config.h" />
     <ClInclude Include="..\..\dependencies\xresource_pipeline\src\xresource_pipeline.h" />
     <ClInclude Include="..\..\dependencies\xresource_pipeline\src\xresource_pipeline_compiler_base.h" />
+    <ClInclude Include="..\..\dependencies\xresource_pipeline\src\xresource_pipeline_descriptor_base.h" />
+    <ClInclude Include="..\..\dependencies\xresource_pipeline\src\xresource_pipeline_key_base.h" />
+    <ClInclude Include="..\..\dependencies\xresource_pipeline\src\xresource_pipeline_tag.h" />
     <ClInclude Include="..\..\src\xgeom_compiler.h" />
     <ClInclude Include="..\..\src_runtime\xgeom.h" />
   </ItemGroup>

@@ -1,12 +1,18 @@
 
 #include "xgeom_compiler.h"
 #include "../../xresource_pipeline/src/xresource_pipeline.h"
-#include "../../dependencies/xasset_pipeline/src/xasset_pipeline.h"
+#include "../../dependencies/xresource_pipeline/src/xresource_pipeline.h"
 
 //---------------------------------------------------------------------------------------
 
 struct geom_pipeline_compiler : xresource_pipeline::compiler::base
 {
+    virtual xcore::guid::rcfull<> getResourcePipelineFullGuid() const noexcept override
+    {
+        static constexpr xcore::guid::rcfull<> full_guid_v{ 0xffull, 0xffull };
+        return full_guid_v;
+    }
+
     virtual xcore::err onCompile( void ) noexcept override
     {
 

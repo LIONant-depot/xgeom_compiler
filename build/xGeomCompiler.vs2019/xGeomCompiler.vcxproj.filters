@@ -6,7 +6,7 @@
       <Filter>xGeomRuntime</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\xgeom_compiler.cpp">
-      <Filter>xxGeomCompiler</Filter>
+      <Filter>xGeomCompiler</Filter>
     </ClCompile>
     <ClCompile Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore.cpp">
       <Filter>Dependencies\xcore</Filter>
@@ -28,9 +28,6 @@
     <Filter Include="xGeomRuntime">
       <UniqueIdentifier>{0ebe1d6c-7004-4946-afcb-51dddffd5937}</UniqueIdentifier>
     </Filter>
-    <Filter Include="xxGeomCompiler">
-      <UniqueIdentifier>{491b815b-ed55-4a7c-bd67-e66c129f22b9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Dependencies">
       <UniqueIdentifier>{fd3079a1-00bb-41eb-a951-53ca7df96904}</UniqueIdentifier>
     </Filter>
@@ -43,13 +40,16 @@
     <Filter Include="Dependencies\xresource_pipeline">
       <UniqueIdentifier>{b54f2f38-1dc4-422f-9258-f1ed909dd510}</UniqueIdentifier>
     </Filter>
+    <Filter Include="xGeomCompiler">
+      <UniqueIdentifier>{491b815b-ed55-4a7c-bd67-e66c129f22b9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src_runtime\xgeom.h">
       <Filter>xGeomRuntime</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\xgeom_compiler.h">
-      <Filter>xxGeomCompiler</Filter>
+      <Filter>xGeomCompiler</Filter>
     </ClInclude>
     <ClInclude Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore.h">
       <Filter>Dependencies\xcore</Filter>
@@ -223,6 +223,18 @@
       <Filter>Dependencies\xresource_pipeline</Filter>
     </ClInclude>
     <ClInclude Include="..\..\dependencies\xresource_pipeline\src\xresource_pipeline_compiler_base.h">
+      <Filter>Dependencies\xresource_pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\dependencies\xresource_pipeline\src\xresource_pipeline_descriptor_base.h">
+      <Filter>Dependencies\xresource_pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\dependencies\xresource_pipeline\src\xresource_pipeline_key_base.h">
+      <Filter>Dependencies\xresource_pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\dependencies\xresource_pipeline\src\xresource_pipeline_tag.h">
+      <Filter>Dependencies\xresource_pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\dependencies\xresource_pipeline\src\xresource_pipeline_config.h">
       <Filter>Dependencies\xresource_pipeline</Filter>
     </ClInclude>
   </ItemGroup>

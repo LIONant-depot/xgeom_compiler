@@ -23,6 +23,54 @@
     <ClCompile Include="..\..\dependencies\xresource_pipeline\src\xresource_pipeline_compiler_base.cpp">
       <Filter>Dependencies\xresource_pipeline</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\Details\xgeom_compiler_instance.cpp">
+      <Filter>xGeomCompiler\Details</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\dependencies\meshoptimizer\src\allocator.cpp">
+      <Filter>Dependencies\meshoptimizer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\dependencies\meshoptimizer\src\clusterizer.cpp">
+      <Filter>Dependencies\meshoptimizer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\dependencies\meshoptimizer\src\indexcodec.cpp">
+      <Filter>Dependencies\meshoptimizer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\dependencies\meshoptimizer\src\indexgenerator.cpp">
+      <Filter>Dependencies\meshoptimizer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\dependencies\meshoptimizer\src\overdrawanalyzer.cpp">
+      <Filter>Dependencies\meshoptimizer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\dependencies\meshoptimizer\src\overdrawoptimizer.cpp">
+      <Filter>Dependencies\meshoptimizer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\dependencies\meshoptimizer\src\simplifier.cpp">
+      <Filter>Dependencies\meshoptimizer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\dependencies\meshoptimizer\src\spatialorder.cpp">
+      <Filter>Dependencies\meshoptimizer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\dependencies\meshoptimizer\src\stripifier.cpp">
+      <Filter>Dependencies\meshoptimizer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\dependencies\meshoptimizer\src\vcacheanalyzer.cpp">
+      <Filter>Dependencies\meshoptimizer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\dependencies\meshoptimizer\src\vcacheoptimizer.cpp">
+      <Filter>Dependencies\meshoptimizer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\dependencies\meshoptimizer\src\vertexcodec.cpp">
+      <Filter>Dependencies\meshoptimizer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\dependencies\meshoptimizer\src\vertexfilter.cpp">
+      <Filter>Dependencies\meshoptimizer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\dependencies\meshoptimizer\src\vfetchanalyzer.cpp">
+      <Filter>Dependencies\meshoptimizer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\dependencies\meshoptimizer\src\vfetchoptimizer.cpp">
+      <Filter>Dependencies\meshoptimizer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="xGeomRuntime">
@@ -42,6 +90,15 @@
     </Filter>
     <Filter Include="xGeomCompiler">
       <UniqueIdentifier>{491b815b-ed55-4a7c-bd67-e66c129f22b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="xGeomCompiler\Details">
+      <UniqueIdentifier>{47dfb15d-dbb9-4601-80e9-301ce6c7b4a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Settings">
+      <UniqueIdentifier>{787c3e77-9d8a-4d4a-a742-8b79b95ab214}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dependencies\meshoptimizer">
+      <UniqueIdentifier>{870ac36b-65c9-4b9c-ad15-ea68f6806c82}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -236,6 +293,21 @@
     </ClInclude>
     <ClInclude Include="..\..\dependencies\xresource_pipeline\src\xresource_pipeline_config.h">
       <Filter>Dependencies\xresource_pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\xgeom_compiler_descriptor.h">
+      <Filter>xGeomCompiler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\xgeom_compiler_instance.h">
+      <Filter>xGeomCompiler</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\PropertyConfig.h">
+      <Filter>Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\xcore_user_settings.h">
+      <Filter>Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\dependencies\meshoptimizer\src\meshoptimizer.h">
+      <Filter>Dependencies\meshoptimizer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

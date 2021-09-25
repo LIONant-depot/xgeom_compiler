@@ -55,7 +55,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>./;../../src;../../dependencies/xraw3d/src;../../src/settings;../../dependencies/xraw3D\dependencies\assimp\include;../../dependencies/xraw3d/dependencies/xcore/src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./;../../src;../../dependencies/xraw3d/src;settings;../../dependencies/xraw3D\dependencies\assimp\include;../../dependencies/xraw3d/dependencies/xcore/src;../../dependencies/xresource_pipeline/src</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
@@ -83,7 +83,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>./;../../src;../../dependencies/xraw3d/src;../../src/settings;../../dependencies/xraw3D\dependencies\assimp\include;../../dependencies/xraw3d/dependencies/xcore/src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./;../../src;../../dependencies/xraw3d/src;settings;../../dependencies/xraw3D\dependencies\assimp\include;../../dependencies/xraw3d/dependencies/xcore/src;../../dependencies/xresource_pipeline/src</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
@@ -95,16 +95,36 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\dependencies\meshoptimizer\src\allocator.cpp" />
+    <ClCompile Include="..\..\dependencies\meshoptimizer\src\clusterizer.cpp" />
+    <ClCompile Include="..\..\dependencies\meshoptimizer\src\indexcodec.cpp" />
+    <ClCompile Include="..\..\dependencies\meshoptimizer\src\indexgenerator.cpp" />
+    <ClCompile Include="..\..\dependencies\meshoptimizer\src\overdrawanalyzer.cpp" />
+    <ClCompile Include="..\..\dependencies\meshoptimizer\src\overdrawoptimizer.cpp" />
+    <ClCompile Include="..\..\dependencies\meshoptimizer\src\simplifier.cpp" />
+    <ClCompile Include="..\..\dependencies\meshoptimizer\src\spatialorder.cpp" />
+    <ClCompile Include="..\..\dependencies\meshoptimizer\src\stripifier.cpp" />
+    <ClCompile Include="..\..\dependencies\meshoptimizer\src\vcacheanalyzer.cpp" />
+    <ClCompile Include="..\..\dependencies\meshoptimizer\src\vcacheoptimizer.cpp" />
+    <ClCompile Include="..\..\dependencies\meshoptimizer\src\vertexcodec.cpp" />
+    <ClCompile Include="..\..\dependencies\meshoptimizer\src\vertexfilter.cpp" />
+    <ClCompile Include="..\..\dependencies\meshoptimizer\src\vfetchanalyzer.cpp" />
+    <ClCompile Include="..\..\dependencies\meshoptimizer\src\vfetchoptimizer.cpp" />
     <ClCompile Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore.cpp" />
     <ClCompile Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore_profiler_1.cpp" />
     <ClCompile Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore_profiler_2.cpp" />
     <ClCompile Include="..\..\dependencies\xraw3D\src\xraw3d.cpp" />
     <ClCompile Include="..\..\dependencies\xresource_pipeline\src\xresource_pipeline_compiler_base.cpp" />
+    <ClCompile Include="..\..\src\Details\xgeom_compiler_instance.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\..\src\xgeom_compiler.cpp" />
     <ClCompile Include="..\..\src_runtime\xgeom.cpp" />
     <ClCompile Include="xGeomCompiler.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\dependencies\meshoptimizer\src\meshoptimizer.h" />
     <ClInclude Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore.h" />
     <ClInclude Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore_arglist.h" />
     <ClInclude Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore_array.h" />
@@ -167,8 +187,12 @@
     <ClInclude Include="..\..\dependencies\xresource_pipeline\src\xresource_pipeline_descriptor_base.h" />
     <ClInclude Include="..\..\dependencies\xresource_pipeline\src\xresource_pipeline_key_base.h" />
     <ClInclude Include="..\..\dependencies\xresource_pipeline\src\xresource_pipeline_tag.h" />
+    <ClInclude Include="..\..\src\xgeom_compiler_instance.h" />
     <ClInclude Include="..\..\src\xgeom_compiler.h" />
+    <ClInclude Include="..\..\src\xgeom_compiler_descriptor.h" />
     <ClInclude Include="..\..\src_runtime\xgeom.h" />
+    <ClInclude Include="Settings\PropertyConfig.h" />
+    <ClInclude Include="Settings\xcore_user_settings.h" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\..\dependencies\xraw3D\dependencies\assimp\BINARIES\Win32\bin\Release\assimp-vc142-mt.dll">

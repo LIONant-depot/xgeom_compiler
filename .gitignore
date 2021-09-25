@@ -349,3 +349,5 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 /dependencies
+/build/xGeomCompiler.vs2019/ResourcePipeline.config
+/build/xGeomCompiler.vs2019/ResourceDesc.txt

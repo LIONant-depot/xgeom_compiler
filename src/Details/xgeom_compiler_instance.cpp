@@ -599,6 +599,12 @@ namespace xgeom_compiler
                 if (CompilerOption.m_Streams.m_UseElementStreams) m_FinalGeom.m_nStreams++;
             }
 
+            // We add another one if we are not doing streams
+            if (CompilerOption.m_Streams.m_UseElementStreams == false )
+            {
+                m_FinalGeom.m_nStreams++;
+            }
+
             //
             // Fill up the rest of the info
             //
@@ -607,6 +613,8 @@ namespace xgeom_compiler
             m_FinalGeom.m_nSubMeshs           = std::uint16_t(FinalSubmeshes.size());
             m_FinalGeom.m_nIndices            = std::uint16_t(Indices32.size());
             m_FinalGeom.m_nVertices           = std::uint32_t(FinalVertex.size());
+            m_FinalGeom.m_nLODs               = std::uint16_t(FinalLod.size());
+
             m_FinalGeom.m_CompactedVertexSize = CompilerOption.m_Streams.m_UseElementStreams
                                                 ? std::uint8_t(0)
                                                 : std::uint8_t( xcore::bits::Align((std::uint32_t)m_FinalGeom.m_StreamInfo[m_FinalGeom.m_nStreamInfos - 1].m_Offset
@@ -615,15 +623,20 @@ namespace xgeom_compiler
             m_FinalGeom.m_nBones        = 0;
             m_FinalGeom.m_nDisplayLists = 0;
 
-            // Allocate the big vertex structure if we have to
+            //
+            // Compute the size of the buffer
+            //
             constexpr auto max_aligment_v = 16;
             using max_align_byte = std::byte alignas(max_aligment_v);
-            if( false == CompilerOption.m_Streams.m_UseElementStreams )
+            m_FinalGeom.m_DataSize  = 0;
+            m_FinalGeom.m_Stream[0] = 0;
+            for (int i = 0; i < m_FinalGeom.m_nStreams; ++i)
             {
-                m_FinalGeom.m_nStreams++;
-                xassert( max_aligment_v > MaxVertAligment );
-                m_FinalGeom.m_Stream[m_FinalGeom.m_nStreams-1] = new max_align_byte[m_FinalGeom.m_nVertices * m_FinalGeom.m_CompactedVertexSize];
+                if (i) m_FinalGeom.m_Stream[i] = m_FinalGeom.m_DataSize;
+                m_FinalGeom.m_DataSize = xcore::bits::Align(m_FinalGeom.m_DataSize + m_FinalGeom.getStreamSize(i), max_aligment_v);
             }
+
+            m_FinalGeom.m_pData = new max_align_byte[m_FinalGeom.m_DataSize];
 
             //-----------------------------------------------------------------------------------
             // Create the streams and copy data
@@ -631,17 +644,6 @@ namespace xgeom_compiler
             for( int i=0; i<m_FinalGeom.m_nStreamInfos; ++i )
             {
                 const auto& StreamInfo = m_FinalGeom.m_StreamInfo[i];
-                std::size_t Stride     = m_FinalGeom.m_CompactedVertexSize;
-
-                // If we are dealing with individual streams or we want to separate from the big vertex
-                // then we have to allocate memory
-                if( i != 0 && CompilerOption.m_Streams.m_UseElementStreams )
-                {
-                    m_FinalGeom.m_Stream[StreamInfo.m_iStream] = new max_align_byte[m_FinalGeom.m_nVertices * StreamInfo.getSize()];
-
-                    // Customize the stride
-                    Stride = StreamInfo.getSize();
-                }
 
                 switch( StreamInfo.m_ElementsType.m_Value )
                 {
@@ -652,9 +654,7 @@ namespace xgeom_compiler
                 {
                     if (StreamInfo.m_Format == xgeom::stream_info::format::UINT32_1D)
                     {
-                        auto pIndexData = new std::uint32_t[Indices32.size()];
-                        m_FinalGeom.m_Stream[StreamInfo.m_iStream] = reinterpret_cast<std::byte*>(pIndexData);
-
+                        auto pIndexData = reinterpret_cast<std::uint32_t*>(m_FinalGeom.getStreamInfoData(i));
                         for (auto i = 0u; i < Indices32.size(); ++i)
                         {
                             pIndexData[i] = Indices32[i];
@@ -662,9 +662,7 @@ namespace xgeom_compiler
                     }
                     else
                     {
-                        auto pIndexData = new std::uint16_t[Indices32.size()];
-                        m_FinalGeom.m_Stream[StreamInfo.m_iStream] = reinterpret_cast<std::byte*>(pIndexData);
-
+                        auto pIndexData = reinterpret_cast<std::uint16_t*>(m_FinalGeom.getStreamInfoData(i));
                         for (auto i = 0u; i < Indices32.size(); ++i)
                         {
                             pIndexData[i] = std::uint16_t(Indices32[i]);
@@ -679,18 +677,8 @@ namespace xgeom_compiler
                 {
                     xassert(StreamInfo.getVectorElementSize() == 4);
 
-                    // If we are dealing with individual streams or we want to separate from the big vertex
-                    // then we have to allocate memory
-                    if( false == CompilerOption.m_Streams.m_UseElementStreams && CompilerOption.m_Streams.m_SeparatePosition )
-                    {
-                        m_FinalGeom.m_Stream[StreamInfo.m_iStream] = reinterpret_cast<std::byte*>(new xcore::vector3d[m_FinalGeom.m_nVertices]);
-
-                        // Customize the stride
-                        Stride = StreamInfo.getSize();
-                    }
-
-                    std::byte*  pVertex = m_FinalGeom.m_Stream[StreamInfo.m_iStream] + StreamInfo.m_Offset;
-
+                    std::byte* pVertex = m_FinalGeom.getStreamInfoData(i);
+                    auto       Stride  = m_FinalGeom.getStreamInfoStride(i);
                     for( auto i=0u; i< FinalVertex.size(); ++i )
                     {
                         std::memcpy(pVertex, &FinalVertex[i].m_Position, sizeof(xcore::vector3d) );
@@ -705,7 +693,8 @@ namespace xgeom_compiler
                 //
                 case xgeom::stream_info::element_def::btn_mask_v:
                 {
-                    std::int8_t* pVertex = reinterpret_cast<std::int8_t*>( m_FinalGeom.m_Stream[StreamInfo.m_iStream] + StreamInfo.m_Offset );
+                    std::byte* pVertex = m_FinalGeom.getStreamInfoData(i);
+                    auto       Stride = m_FinalGeom.getStreamInfoStride(i);
 
                     if( CompilerOption.m_Streams.m_bCompressBTN == false )
                     {
@@ -724,17 +713,17 @@ namespace xgeom_compiler
                         Stride -= 3*3;
                         for( auto i=0u; i< FinalVertex.size(); ++i )
                         {
-                            *pVertex = std::int8_t(FinalVertex[i].m_Binormal.m_X * (0xff >> 1)); pVertex++;
-                            *pVertex = std::int8_t(FinalVertex[i].m_Binormal.m_Y * (0xff >> 1)); pVertex++;
-                            *pVertex = std::int8_t(FinalVertex[i].m_Binormal.m_Z * (0xff >> 1)); pVertex++;
+                            *pVertex = std::byte(FinalVertex[i].m_Binormal.m_X * (0xff >> 1)); pVertex++;
+                            *pVertex = std::byte(FinalVertex[i].m_Binormal.m_Y * (0xff >> 1)); pVertex++;
+                            *pVertex = std::byte(FinalVertex[i].m_Binormal.m_Z * (0xff >> 1)); pVertex++;
 
-                            *pVertex = std::int8_t(FinalVertex[i].m_Tangent.m_X * (0xff >> 1)); pVertex++;
-                            *pVertex = std::int8_t(FinalVertex[i].m_Tangent.m_Y * (0xff >> 1)); pVertex++;
-                            *pVertex = std::int8_t(FinalVertex[i].m_Tangent.m_Z * (0xff >> 1)); pVertex++;
+                            *pVertex = std::byte(FinalVertex[i].m_Tangent.m_X * (0xff >> 1)); pVertex++;
+                            *pVertex = std::byte(FinalVertex[i].m_Tangent.m_Y * (0xff >> 1)); pVertex++;
+                            *pVertex = std::byte(FinalVertex[i].m_Tangent.m_Z * (0xff >> 1)); pVertex++;
 
-                            *pVertex = std::int8_t(FinalVertex[i].m_Normal.m_X * (0xff >> 1)); pVertex++;
-                            *pVertex = std::int8_t(FinalVertex[i].m_Normal.m_Y * (0xff >> 1)); pVertex++;
-                            *pVertex = std::int8_t(FinalVertex[i].m_Normal.m_Z * (0xff >> 1)); pVertex++;
+                            *pVertex = std::byte(FinalVertex[i].m_Normal.m_X * (0xff >> 1)); pVertex++;
+                            *pVertex = std::byte(FinalVertex[i].m_Normal.m_Y * (0xff >> 1)); pVertex++;
+                            *pVertex = std::byte(FinalVertex[i].m_Normal.m_Z * (0xff >> 1)); pVertex++;
 
                             pVertex += Stride;
                         }
@@ -749,7 +738,8 @@ namespace xgeom_compiler
                 case xgeom::stream_info::element_def::uv_mask_v:
                 {
                     xassert(StreamInfo.getVectorElementSize() == 4);
-                    auto* pVertex = m_FinalGeom.m_Stream[StreamInfo.m_iStream] + StreamInfo.m_Offset;
+                    std::byte* pVertex = m_FinalGeom.getStreamInfoData(i);
+                    auto       Stride = m_FinalGeom.getStreamInfoStride(i);
 
                     for( auto i = 0u; i < FinalVertex.size(); ++i )
                     {
@@ -772,7 +762,8 @@ namespace xgeom_compiler
                 case xgeom::stream_info::element_def::color_mask_v:
                 {
                     xassert(StreamInfo.getVectorElementSize() == 1);
-                    auto* pVertex = m_FinalGeom.m_Stream[StreamInfo.m_iStream] + StreamInfo.m_Offset;
+                    std::byte* pVertex = m_FinalGeom.getStreamInfoData(i);
+                    auto       Stride = m_FinalGeom.getStreamInfoStride(i);
 
                     for( auto i = 0u; i < FinalVertex.size(); ++i )
                     {
@@ -788,7 +779,8 @@ namespace xgeom_compiler
                 //
                 case xgeom::stream_info::element_def::bone_weight_mask_v:
                 {
-                    auto* pVertex = reinterpret_cast<std::uint8_t*>(m_FinalGeom.m_Stream[StreamInfo.m_iStream] + StreamInfo.m_Offset);
+                    std::byte* pVertex = m_FinalGeom.getStreamInfoData(i);
+                    auto       Stride = m_FinalGeom.getStreamInfoStride(i);
 
                     if( StreamInfo.getVectorElementSize() == 1 )
                     {
@@ -796,7 +788,7 @@ namespace xgeom_compiler
                         {
                             for (int j = 0; j < StreamInfo.m_VectorCount; ++j)
                             {
-                                pVertex[j] = std::uint8_t(FinalVertex[i].m_Weights[j].m_Weight * 0xff);
+                                pVertex[j] = std::byte(FinalVertex[i].m_Weights[j].m_Weight * 0xff);
                             }
 
                             pVertex += Stride;
@@ -824,7 +816,8 @@ namespace xgeom_compiler
                 //
                 case xgeom::stream_info::element_def::bone_index_mask_v:
                 {
-                    auto* pVertex = reinterpret_cast<std::uint8_t*>(m_FinalGeom.m_Stream[StreamInfo.m_iStream] + StreamInfo.m_Offset);
+                    std::byte* pVertex = m_FinalGeom.getStreamInfoData(i);
+                    auto       Stride = m_FinalGeom.getStreamInfoStride(i);
 
                     if( StreamInfo.getVectorElementSize() == 1 )
                     {
@@ -832,7 +825,7 @@ namespace xgeom_compiler
                         {
                             for (int j = 0; j < StreamInfo.m_VectorCount; ++j)
                             {
-                                *pVertex = std::uint8_t(FinalVertex[i].m_Weights[j].m_iBone);
+                                *pVertex = std::byte(FinalVertex[i].m_Weights[j].m_iBone);
                             }
 
                             pVertex += Stride;
@@ -894,7 +887,9 @@ namespace xgeom_compiler
 
         virtual void Serialize(const std::string_view FilePath) override
         {
-
+            xcore::serializer::stream Stream;
+            if( auto Err = Stream.Save( xcore::string::To<wchar_t>(FilePath), m_FinalGeom, {}, false ); Err )
+                throw(std::runtime_error( xcore::string::Fmt("Failed to serialize geometry (%s)", Err.getCode().m_pString).data() ));
         }
 
         meshopt_VertexCacheStatistics   m_VertCacheAMDStats;

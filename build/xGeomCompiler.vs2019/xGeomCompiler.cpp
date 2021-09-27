@@ -26,7 +26,6 @@ struct geom_pipeline_compiler : xresource_pipeline::compiler::base
         {
             if( T.m_bValid) m_Compiler->Serialize(T.m_DataPath.data());
         }
-        
         return {};
     }
 
@@ -47,7 +46,7 @@ int main( int argc, const char* argv[] )
     {
         xgeom_compiler::descriptor Option;
         Option.m_Main.m_MeshAsset = xcore::string::Fmt("spider.fbx");
-        xgeom_compiler::descriptor::Serialize(Option, "ResourceDesc.txt", false);
+        (void)xgeom_compiler::descriptor::Serialize(Option, "ResourceDesc.txt", false);
     }
 
     if constexpr (true)
@@ -62,7 +61,7 @@ int main( int argc, const char* argv[] )
         , .m_bDefaultSettingInEditor    = true
         });
 
-        xresource_pipeline::config::Serialize( Info, "ResourcePipeline.config", false );
+        (void)xresource_pipeline::config::Serialize( Info, "ResourcePipeline.config", false );
     }
 
     //

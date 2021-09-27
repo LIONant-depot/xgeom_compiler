@@ -228,9 +228,6 @@
     <ClInclude Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore_scheduler_trigger.h">
       <Filter>Dependencies\xcore</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore_serialicer.h">
-      <Filter>Dependencies\xcore</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\dependencies\xraw3D\dependencies\xcore\src\xcore_serializer.h">
       <Filter>Dependencies\xcore</Filter>
     </ClInclude>

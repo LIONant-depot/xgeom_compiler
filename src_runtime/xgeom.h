@@ -151,126 +151,92 @@ struct xgeom
         std::uint8_t    m_iStream;
     };
 
-
     static constexpr auto max_stream_count_v = 6;
 
     //-------------------------------------------------------------------------
             
-                    xgeom               ( void ) = default;
+                    xgeom                       ( void ) = default;
     inline 
-    int             getFaceCount        ( void ) const noexcept;
+    int             getFaceCount                ( void ) const noexcept;
     inline 
-    int             getVertexCount      ( void ) const noexcept;
+    int             getVertexCount              ( void ) const noexcept;
     inline 
-    int             findMeshIndex       ( const char* pName ) const noexcept;
+    int             findMeshIndex               ( const char* pName ) const noexcept;
     inline 
-    int             getSubMeshIndex     ( int iMesh, int iMaterial ) const noexcept;
+    int             getSubMeshIndex             ( int iMesh, int iMaterial ) const noexcept;
     inline 
-    void            Initialize          ( void ) noexcept;
+    void            Initialize                  ( void ) noexcept;
     inline
-    void            Kill                ( void ) noexcept;
+    void            Kill                        ( void ) noexcept;
     inline
-    void            Reset               ( void ) noexcept;
+    void            Reset                       ( void ) noexcept;
+    inline
+    bool            isStreamBased               ( void ) const noexcept;
+    inline
+    bool            hasSeparatedPositions       ( void ) const noexcept;
+    inline
+    int             getVertexSize               ( int iStream ) const noexcept;
+    inline 
+    std::uint32_t   getStreamSize               ( int iStream ) const noexcept;
+    inline
+    std::byte*      getStreamData               ( int iStream ) noexcept;
+    inline
+    std::byte*      getStreamInfoData           ( int iStreamInfo ) noexcept;
+    inline
+    int             getStreamInfoStride         ( int iStreamInfo ) noexcept;
 
-    int             getVertexSize       ( int iStream )
-    {
-        if(m_CompactedVertexSize)
-        {
-            if( m_nStreams == 3 )
-            {
-                if( iStream == 1 ) return m_StreamInfo[iStream].getSize();
-                return m_CompactedVertexSize;
-            }
-            else
-            {
-                xassert(m_nStreams == 2);
-                return m_CompactedVertexSize;
-            }
-        }
-        else
-        {
-            return m_StreamInfo[iStream].getSize();
-        }
-    }
-
-
-    bone*                       m_pBone;
-    mesh*                       m_pMesh;
-    submesh*                    m_pSubMesh;
-    lod*                        m_pLOD;
-    cmd*                        m_pDList;
-    std::array<std::byte*, max_stream_count_v> m_Stream;
-    xcore::bbox                 m_BBox;
-    std::uint32_t               m_nIndices;
-    std::uint32_t               m_nVertices;
-    std::uint16_t               m_nBones;
-    std::uint16_t               m_nMeshes;
-    std::uint16_t               m_nSubMeshs;
-    std::uint16_t               m_nMaterials;
-    std::uint16_t               m_nDisplayLists;
-    stream_info::element_def    m_StreamTypes;
-    std::uint8_t                m_nStreams;
-    std::uint8_t                m_nStreamInfos;
-    std::uint8_t                m_CompactedVertexSize;
-    std::array<stream_info, max_stream_count_v>  m_StreamInfo;
+    bone*                                           m_pBone;
+    mesh*                                           m_pMesh;
+    submesh*                                        m_pSubMesh;
+    lod*                                            m_pLOD;
+    cmd*                                            m_pDList;
+    std::byte*                                      m_pData;
+    std::uint32_t                                   m_DataSize;
+    std::array<std::uint32_t, max_stream_count_v>   m_Stream;
+    xcore::bbox                                     m_BBox;
+    std::uint32_t                                   m_nIndices;
+    std::uint32_t                                   m_nVertices;
+    std::uint16_t                                   m_nLODs;
+    std::uint16_t                                   m_nBones;
+    std::uint16_t                                   m_nMeshes;
+    std::uint16_t                                   m_nSubMeshs;
+    std::uint16_t                                   m_nMaterials;
+    std::uint16_t                                   m_nDisplayLists;
+    stream_info::element_def                        m_StreamTypes;
+    std::uint8_t                                    m_nStreams;
+    std::uint8_t                                    m_nStreamInfos;
+    std::uint8_t                                    m_CompactedVertexSize;
+    std::array<stream_info, max_stream_count_v>     m_StreamInfo;
 };
 
 //-------------------------------------------------------------------------
-inline
+
 void xgeom::Initialize(void) noexcept
 {
     std::memset( this, 0, sizeof(*this) );
 }
 
 //-------------------------------------------------------------------------
-inline
+
 void xgeom::Kill(void) noexcept
 {
-    if (m_pBone) delete[] m_pBone;
-    if (m_pMesh) delete[] m_pMesh;
+    if (m_pBone)    delete[] m_pBone;
+    if (m_pMesh)    delete[] m_pMesh;
     if (m_pSubMesh) delete[] m_pSubMesh;
-    if (m_pLOD) delete[] m_pLOD;
-    if (m_pDList) delete[] m_pDList;
-    for( auto i=0u; i< m_nStreams; ++i )
-    {
-        if(m_Stream[i]) delete[] m_Stream[i];
-    }
+    if (m_pLOD)     delete[] m_pLOD;
+    if (m_pDList)   delete[] m_pDList;
+    if( m_pData)    delete[] m_pData;
 }
 
 //-------------------------------------------------------------------------
-inline
+
 void xgeom::Reset(void) noexcept
 {
     Kill();
     Initialize();
 }
 
-//-------------------------------------------------------------------------
-/*
-int geom::getFaceCount( void ) const noexcept
-{
-    int Total = 0;
-    for ( auto i = 0u; i < m_nMeshes; i++ )
-    {
-        Total += m_pMesh[i].m_nFaces;
-    }
 
-    return Total;
-}
-
-//-------------------------------------------------------------------------
-
-int geom::getVertexCount( void ) const noexcept
-{
-    int Total = 0;
-    for ( auto i = 0u; i < m_nMeshes; i++ )
-    {
-        Total += m_pMesh[i].m_nVertices;
-    }
-
-    return Total;
-}
-*/
 //-------------------------------------------------------------------------
 
 int xgeom::findMeshIndex( const char* pName ) const noexcept
@@ -287,22 +253,226 @@ int xgeom::findMeshIndex( const char* pName ) const noexcept
 }
 
 //-------------------------------------------------------------------------
-/*
-int geom::getSubMeshIndex( int iMesh, int iMaterial ) const noexcept
+
+bool xgeom::isStreamBased(void) const noexcept 
+{ 
+    return !!m_CompactedVertexSize; 
+}
+
+//-------------------------------------------------------------------------
+
+bool xgeom::hasSeparatedPositions(void) const noexcept 
+{ 
+    return isStreamBased() || (isStreamBased() == false && m_nStreams == 3); 
+}
+
+//-------------------------------------------------------------------------
+
+int xgeom::getVertexSize(int iStream)  const noexcept
 {
-    xassert( (iMesh>=0) && (iMesh<m_nMeshes) );
-    for ( auto i     = m_pMesh[iMesh].m_iSubMesh
-          ,    end_i = m_pMesh[iMesh].m_iSubMesh + m_pMesh[iMesh].m_nSubMeshs
-        ; i < end_i
-        ; i++ 
-        )
+    xassert(iStream < m_nStreams);
+    if (m_CompactedVertexSize)
     {
-        if ( m_pSubMesh[i].m_iMaterial == iMaterial )
-            return i;
+        if (m_nStreams == 3)
+        {
+            if (iStream == 1) return m_StreamInfo[iStream].getSize();
+            return m_CompactedVertexSize;
+        }
+        else
+        {
+            xassert(m_nStreams == 2);
+            return m_CompactedVertexSize;
+        }
+    }
+    else
+    {
+        return m_StreamInfo[iStream].getSize();
+    }
+}
+
+//-------------------------------------------------------------------------
+
+std::uint32_t xgeom::getStreamSize(int iStream) const noexcept
+{
+    xassert(iStream < m_nStreams);
+    return m_StreamInfo[iStream].getSize() * (iStream == 0 ? m_nIndices : m_nVertices);
+}
+
+//-------------------------------------------------------------------------
+
+std::byte* xgeom::getStreamData(int iStream) noexcept
+{
+    xassert(iStream < m_nStreams);
+    return m_pData + m_Stream[iStream];
+}
+
+//-------------------------------------------------------------------------
+
+std::byte* xgeom::getStreamInfoData(int iStreamInfo) noexcept
+{
+    xassert(iStreamInfo < m_nStreamInfos);
+    return getStreamData(m_StreamInfo[iStreamInfo].m_iStream) + m_StreamInfo[iStreamInfo].m_Offset;
+}
+
+//-------------------------------------------------------------------------
+
+int xgeom::getStreamInfoStride(int iStreamInfo) noexcept
+{
+    if (iStreamInfo == 0 || isStreamBased()) return m_StreamInfo[iStreamInfo].getSize();
+    if (m_nStreams == 3) return (iStreamInfo == 1) ? m_StreamInfo[1].getSize() : static_cast<std::uint32_t>(m_CompactedVertexSize);
+    return static_cast<std::uint32_t>(m_CompactedVertexSize);
+}
+
+//-------------------------------------------------------------------------
+// serializer
+//-------------------------------------------------------------------------
+namespace xcore::serializer::io_functions
+{
+    //-------------------------------------------------------------------------
+
+    template<>
+    xcore::err SerializeIO<xgeom::stream_info::element_def>(xcore::serializer::stream& Stream, const xgeom::stream_info::element_def& ElementDef ) noexcept
+    {
+        return Stream.Serialize(ElementDef.m_Value);
     }
 
-    return -1;
+    //-------------------------------------------------------------------------
+
+    template<>
+    xcore::err SerializeIO<xgeom::bone>(xcore::serializer::stream& Stream, const xgeom::bone& Bone ) noexcept
+    {
+        xcore::err Err;
+        false
+        || (Err = Stream.Serialize(Bone.m_BBox.m_Min.m_X    ))
+        || (Err = Stream.Serialize(Bone.m_BBox.m_Min.m_Y    ))
+        || (Err = Stream.Serialize(Bone.m_BBox.m_Min.m_Z    ))
+        || (Err = Stream.Serialize(Bone.m_BBox.m_Max.m_X    ))
+        || (Err = Stream.Serialize(Bone.m_BBox.m_Max.m_Y    ))
+        || (Err = Stream.Serialize(Bone.m_BBox.m_Max.m_Z    ))
+        ;
+        return Err;
+    }
+
+    //-------------------------------------------------------------------------
+
+    template<>
+    xcore::err SerializeIO<xgeom::lod>(xcore::serializer::stream& Stream, const xgeom::lod& Lod ) noexcept
+    {
+        xcore::err Err;
+        false
+        || (Err = Stream.Serialize(Lod.m_ScreenArea     ))
+        || (Err = Stream.Serialize(Lod.m_iSubmesh       ))
+        || (Err = Stream.Serialize(Lod.m_nSubmesh       ))
+        ;
+        return Err;
+    }
+
+    //-------------------------------------------------------------------------
+
+    template<>
+    xcore::err SerializeIO<xgeom::mesh>(xcore::serializer::stream& Stream, const xgeom::mesh& Mesh ) noexcept
+    {
+        xcore::err Err;
+        false
+        || (Err = Stream.Serialize(Mesh.m_Name              ))
+        || (Err = Stream.Serialize(Mesh.m_WorldPixelSize    ))
+        || (Err = Stream.Serialize(Mesh.m_BBox.m_Min.m_X    ))
+        || (Err = Stream.Serialize(Mesh.m_BBox.m_Min.m_Y    ))
+        || (Err = Stream.Serialize(Mesh.m_BBox.m_Min.m_Z    ))
+        || (Err = Stream.Serialize(Mesh.m_BBox.m_Max.m_X    ))
+        || (Err = Stream.Serialize(Mesh.m_BBox.m_Max.m_Y    ))
+        || (Err = Stream.Serialize(Mesh.m_BBox.m_Max.m_Z    ))
+        || (Err = Stream.Serialize(Mesh.m_nLODs             ))
+        || (Err = Stream.Serialize(Mesh.m_iLOD              ))
+        ;
+        return Err;
+    }
+
+    //-------------------------------------------------------------------------
+
+    template<>
+    xcore::err SerializeIO<xgeom::submesh>(xcore::serializer::stream& Stream, const xgeom::submesh& Submesh ) noexcept
+    {
+        xcore::err Err;
+        false
+        || (Err = Stream.Serialize(Submesh.m_BaseSortKey ))
+        || (Err = Stream.Serialize(Submesh.m_iIndex      ))
+        || (Err = Stream.Serialize(Submesh.m_nIndices    ))
+        || (Err = Stream.Serialize(Submesh.m_iDList      ))
+        || (Err = Stream.Serialize(Submesh.m_nDLists     ))
+        || (Err = Stream.Serialize(Submesh.m_iMaterial   ))
+        ;
+        return Err;
+    }
+
+    //-------------------------------------------------------------------------
+
+    template<>
+    xcore::err SerializeIO<xgeom::cmd>(xcore::serializer::stream& Stream, const xgeom::cmd& Cmd ) noexcept
+    {
+        xcore::err Err;
+        false
+        || (Err = Stream.Serialize( Cmd.m_Type))
+        || (Err = Stream.Serialize( Cmd.m_ArgX))
+        ;
+        return Err;
+    }
+
+    //-------------------------------------------------------------------------
+
+    template<>
+    xcore::err SerializeIO<xgeom::stream_info>(xcore::serializer::stream& Stream, const xgeom::stream_info& StreamInfo ) noexcept
+    {
+        xcore::err Err;
+        false
+        || (Err = Stream.Serialize( StreamInfo.m_ElementsType   ))
+        || (Err = Stream.Serialize(StreamInfo.m_Format          ))
+        || (Err = Stream.Serialize(StreamInfo.m_VectorCount     ))
+        || (Err = Stream.Serialize(StreamInfo.m_Offset          ))
+        || (Err = Stream.Serialize(StreamInfo.m_iStream         ))
+        ;
+        return Err;
+    }
+
+    //-------------------------------------------------------------------------
+
+    template<>
+    xcore::err SerializeIO<xgeom>(xcore::serializer::stream& Stream, const xgeom& Geom ) noexcept
+    {
+        xcore::err Err;
+        false
+        || (Err = Stream.Serialize( Geom.m_pBone,    Geom.m_nBones          ))
+        || (Err = Stream.Serialize( Geom.m_pMesh,    Geom.m_nMeshes         ))
+        || (Err = Stream.Serialize( Geom.m_pSubMesh, Geom.m_nSubMeshs       ))
+        || (Err = Stream.Serialize( Geom.m_pLOD,     Geom.m_nLODs           ))
+        || (Err = Stream.Serialize( Geom.m_pDList,   Geom.m_nDisplayLists   ))
+        || (Err = Stream.Serialize( Geom.m_pData,    Geom.m_DataSize, mem_type::Flags(mem_type::flags::UNIQUE)))
+        || (Err = Stream.Serialize( Geom.m_DataSize             ))
+        || (Err = Stream.Serialize( Geom.m_Stream               ))
+        || (Err = Stream.Serialize( Geom.m_BBox.m_Min.m_X       ))
+        || (Err = Stream.Serialize( Geom.m_BBox.m_Min.m_Y       ))
+        || (Err = Stream.Serialize( Geom.m_BBox.m_Max.m_X       ))
+        || (Err = Stream.Serialize( Geom.m_BBox.m_Max.m_Y       ))
+        || (Err = Stream.Serialize( Geom.m_nIndices             ))
+        || (Err = Stream.Serialize( Geom.m_nVertices            ))
+        || (Err = Stream.Serialize( Geom.m_nBones               ))
+        || (Err = Stream.Serialize( Geom.m_nMeshes              ))
+        || (Err = Stream.Serialize( Geom.m_nSubMeshs            ))
+        || (Err = Stream.Serialize( Geom.m_nMaterials           ))
+        || (Err = Stream.Serialize( Geom.m_nDisplayLists        ))
+        || (Err = Stream.Serialize( Geom.m_StreamTypes          ))
+        || (Err = Stream.Serialize( Geom.m_nStreams             ))
+        || (Err = Stream.Serialize( Geom.m_nStreamInfos         ))
+        || (Err = Stream.Serialize( Geom.m_CompactedVertexSize  ))
+        || (Err = Stream.Serialize( Geom.m_StreamInfo           ))
+        ;
+        return Err;
+    }
+
+    //-------------------------------------------------------------------------
+
 }
-*/
+
+
 #endif
 

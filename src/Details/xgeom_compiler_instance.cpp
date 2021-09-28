@@ -633,7 +633,8 @@ namespace xgeom_compiler
             for (int i = 0; i < m_FinalGeom.m_nStreams; ++i)
             {
                 if (i) m_FinalGeom.m_Stream[i] = m_FinalGeom.m_DataSize;
-                m_FinalGeom.m_DataSize = xcore::bits::Align(m_FinalGeom.m_DataSize + m_FinalGeom.getStreamSize(i), max_aligment_v);
+                const auto Size = m_FinalGeom.getStreamSize(i);
+                m_FinalGeom.m_DataSize = xcore::bits::Align(m_FinalGeom.m_DataSize + Size, max_aligment_v);
             }
 
             m_FinalGeom.m_pData = new max_align_byte[m_FinalGeom.m_DataSize];
@@ -681,7 +682,7 @@ namespace xgeom_compiler
                     auto       Stride  = m_FinalGeom.getStreamInfoStride(i);
                     for( auto i=0u; i< FinalVertex.size(); ++i )
                     {
-                        std::memcpy(pVertex, &FinalVertex[i].m_Position, sizeof(xcore::vector3d) );
+                        *((xcore::vector3d*)pVertex) =  FinalVertex[i].m_Position;
                         pVertex += Stride;
                     }
 

@@ -156,6 +156,7 @@ struct xgeom
     //-------------------------------------------------------------------------
             
                     xgeom                       ( void ) = default;
+    inline          xgeom                       ( xcore::serializer::stream& Steaming ) noexcept;
     inline 
     int             getFaceCount                ( void ) const noexcept;
     inline 
@@ -211,6 +212,13 @@ struct xgeom
 
 //-------------------------------------------------------------------------
 
+xgeom::xgeom(xcore::serializer::stream& Steaming) noexcept
+{
+    //xassert( Steaming.getResourceVersion() == xgeom::VERSION );
+}
+
+//-------------------------------------------------------------------------
+
 void xgeom::Initialize(void) noexcept
 {
     std::memset( this, 0, sizeof(*this) );
@@ -256,7 +264,7 @@ int xgeom::findMeshIndex( const char* pName ) const noexcept
 
 bool xgeom::isStreamBased(void) const noexcept 
 { 
-    return !!m_CompactedVertexSize; 
+    return !m_CompactedVertexSize; 
 }
 
 //-------------------------------------------------------------------------
@@ -295,7 +303,9 @@ int xgeom::getVertexSize(int iStream)  const noexcept
 std::uint32_t xgeom::getStreamSize(int iStream) const noexcept
 {
     xassert(iStream < m_nStreams);
-    return m_StreamInfo[iStream].getSize() * (iStream == 0 ? m_nIndices : m_nVertices);
+    if (iStream == 0 || isStreamBased()) return m_StreamInfo[iStream].getSize() * (iStream == 0 ? m_nIndices : m_nVertices);
+    if (m_nStreams == 3) return m_nVertices * ((iStream == 1) ? m_StreamInfo[1].getSize() : static_cast<std::uint32_t>(m_CompactedVertexSize));
+    return static_cast<std::uint32_t>(m_CompactedVertexSize) * m_nVertices;
 }
 
 //-------------------------------------------------------------------------

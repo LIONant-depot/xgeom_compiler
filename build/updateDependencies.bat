@@ -1,4 +1,4 @@
-rem @echo OFF
+@echo OFF
 setlocal enabledelayedexpansion
 set XGEOM_COMPILER_PATH=%cd%
 
@@ -24,7 +24,7 @@ rem ------------------------------------------------------------
 rmdir "../dependencies/xraw3D" /S /Q
 git clone https://github.com/LIONant-depot/xraw3D.git "../dependencies/xraw3D"
 if %ERRORLEVEL% GEQ 1 goto :ERROR
-cd ../dependencies/xcore/builds
+cd ../dependencies/xraw3D/build
 if %ERRORLEVEL% GEQ 1 goto :ERROR
 call updateDependencies.bat "return"
 if %ERRORLEVEL% GEQ 1 goto :ERROR

@@ -40,17 +40,25 @@ git clone https://github.com/zeux/meshoptimizer.git "../dependencies/meshoptimiz
 if %ERRORLEVEL% GEQ 1 goto :ERROR
 
 rem ------------------------------------------------------------
+rem XRESOURCE_PIPELINE
+rem ------------------------------------------------------------
+:XRESOURCe_PIPELINE
+rmdir "../dependencies/xresource_pipeline" /S /Q
+git clone https://github.com/LIONant-depot/xresource_pipeline.git "../dependencies/xresource_pipeline"
+if %ERRORLEVEL% GEQ 1 goto :ERROR
+
+rem ------------------------------------------------------------
 rem DONE
 rem ------------------------------------------------------------
 :DONE
 powershell write-host -fore White ------------------------------------------------------------------------------------------------------
-powershell write-host -fore White XGEOM EXAMPLES - DONE!!
+powershell write-host -fore White XGEOM COMPILER - DONE!!
 powershell write-host -fore White ------------------------------------------------------------------------------------------------------
 goto :PAUSE
 
 :ERROR
 powershell write-host -fore Red ------------------------------------------------------------------------------------------------------
-powershell write-host -fore Red XGEOM EXAMPLES - ERROR!!
+powershell write-host -fore Red XGEOM COMPILER - ERROR!!
 powershell write-host -fore Red ------------------------------------------------------------------------------------------------------
 
 :PAUSE

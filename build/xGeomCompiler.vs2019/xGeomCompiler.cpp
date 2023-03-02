@@ -1,5 +1,6 @@
 
 #include "xgeom_compiler.h"
+#include <filesystem>
 
 //---------------------------------------------------------------------------------------
 
@@ -42,15 +43,26 @@ int main( int argc, const char* argv[] )
 
     auto GeomCompilerPipeline = std::make_unique<geom_pipeline_compiler>();
 
+    //
+    // Example, please turn off when no needed...
+    // Use the following command line: -OPTIMIZATION "O1" -DEBUG "D0" -TARGET "WINDOWS" -EDITOR ".\x64\test.lion_editor" -PROJECT ".\x64\test.lion_project" -ASSETS "./../../dependencies/xraw3D/dependencies/assimp/test/models/FBX" -INPUT "FF.FF/FF" -OUTPUT "./x64/test.lion_rcdbase"
+    //
     if constexpr (true)
     {
+        std::filesystem::create_directories("x64/test.lion_project/Config");
+        std::filesystem::create_directories("x64/test.lion_project/Resources/xgeom/FF");
+        std::filesystem::create_directories("x64/test.lion_rcdbase/0.0-0/WINDOWS.platform/Data");
+
+        //
+        // drescriptor file
+        //
         xgeom_compiler::descriptor Option;
         Option.m_Main.m_MeshAsset = xcore::string::Fmt("spider.fbx");
-        (void)xgeom_compiler::descriptor::Serialize(Option, "ResourceDesc.txt", false);
-    }
+        (void)xgeom_compiler::descriptor::Serialize(Option, "./x64/test.lion_project/Resources/xgeom/FF/ResourceDesc.txt", false);
 
-    if constexpr (true)
-    {
+        //
+        // Create config file
+        //
         xresource_pipeline::config::info Info
         { .m_RootAssetsPath = "x64/Assets"
         };
@@ -61,7 +73,7 @@ int main( int argc, const char* argv[] )
         , .m_bDefaultSettingInEditor    = true
         });
 
-        (void)xresource_pipeline::config::Serialize( Info, "ResourcePipeline.config", false );
+        (void)xresource_pipeline::config::Serialize( Info, "./x64/test.lion_project/Config/ResourcePipeline.config", false );
     }
 
     //

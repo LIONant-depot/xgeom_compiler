@@ -117,6 +117,7 @@ struct xgeom
         ,   SINT16_3D_NORMALIZED
         ,   UINT16_2D_NORMALIZED
         ,   SINT16_2D_NORMALIZED
+        ,   SINT_RGB10A2_4D_NORMALIZED
         ,   ENUM_COUNT
         };
 
